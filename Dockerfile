@@ -33,8 +33,8 @@ RUN    /etc/init.d/postgresql start &&\
     createdb -O docker docker
 
 #Deleting default config files
-RUN rm /etc/postgresql/9.3/main/pg_hba.conf \
-	rm /etc/postgresql/9.3/main/postgresql.conf 
+RUN rm /etc/postgresql/9.3/main/pg_hba.conf &&\
+	rm /etc/postgresql/9.3/main/postgresql.conf
 
 # Copying configuration files
 COPY  ./pg_hba.conf /etc/postgresql/9.3/main/
