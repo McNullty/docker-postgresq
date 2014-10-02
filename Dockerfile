@@ -32,14 +32,13 @@ RUN    /etc/init.d/postgresql start &&\
     psql --command "CREATE USER docker WITH SUPERUSER PASSWORD 'docker';" &&\
     createdb -O docker docker
 
-# TODO Prekopirati datoteke s postavkama
+#Deleting default config files
+RUN rm /etc/postgresql/9.3/main/pg_hba.conf \
+	rm /etc/postgresql/9.3/main/postgresql.conf 
 
-# Adjust PostgreSQL configuration so that remote connections to the
-# database are possible. 
-RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.3/main/pg_hba.conf
-
-# And add ``listen_addresses`` to ``/etc/postgresql/9.3/main/postgresql.conf``
-RUN echo "listen_addresses='*'" >> /etc/postgresql/9.3/main/postgresql.conf
+# Copying configuration files
+COPY  ./pg_hba.conf /etc/postgresql/9.3/main/
+COPY  ./postgresql.conf /etc/postgresql/9.3/main/
 
 # Expose the PostgreSQL port
 EXPOSE 5432
